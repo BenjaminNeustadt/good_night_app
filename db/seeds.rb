@@ -8,3 +8,8 @@ user_1.sleeps.create
 user_2 = User.create(name: "Dan")
 user_2.sleeps.create
 user_2.sleeps.create
+
+
+user_3 = User.create(name: "Tony")
+user_3.sleeps.create
+user_3.followers.create(name: "Stacy")
