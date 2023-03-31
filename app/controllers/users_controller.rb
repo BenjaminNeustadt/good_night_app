@@ -15,6 +15,18 @@ class UsersController < ApplicationController
     user
   end
 
+  def follow
+    follower = User.find(params[:follower_id])
+    @user = User.find(params[:user_id])
+    follower.followees << @user
+  end
+
+  def unfollow
+    follower = User.find(params[:follower_id])
+    @user = User.find(params[:user_id])
+    follower.followees.delete(@user)
+  end
+
   def clock_in
     @user = User.find(params[:user_id])
     if @user.sleeps.last&.updated_at == @user.sleeps.last.created_at
