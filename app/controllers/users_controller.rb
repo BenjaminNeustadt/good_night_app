@@ -15,6 +15,12 @@ class UsersController < ApplicationController
     user
   end
 
+  def clock_in
+    @user = User.find(params[:user_id])
+    @sleep = @user.sleeps.create
+    render json: { status: 'success', data: @sleep }
+  end
+
   # GET /users/1
   def show
     render json: @user
