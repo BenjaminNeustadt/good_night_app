@@ -23,8 +23,6 @@ class UsersController < ApplicationController
       @user.sleeps.create
     end
     render json: @user, include: :sleeps
-      # OR instead:
-      # render json: { status: 'success', data: @sleep }
   end
 
   # GET /users/1
