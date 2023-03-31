@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   # GET /users
   def index
     @users = User.all
-    render json: @users, include: [:sleeps => {:except => [:user_id, :updated_at]}]
+    render json: @users, include: [:sleeps => {:except => :user_id}]
   end
 
   # GET /users/1
