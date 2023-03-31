@@ -2,11 +2,11 @@ class Sleep < ApplicationRecord
   belongs_to :user, touch: true
 
   def clocked_in
-    self.created_at.strftime('%Y-%m-%d %H:%M:%S')
+    self.created_at
   end
 
   def clocked_out
-    self.updated_at.strftime('%Y-%m-%d %H:%M:%S')
+    self.updated_at
   end
 
 end
