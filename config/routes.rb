@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :follows
   resources :users do
     resources :sleeps
     post 'clock_in', to: 'users#clock_in'
