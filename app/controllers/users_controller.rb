@@ -4,7 +4,15 @@ class UsersController < ApplicationController
   # GET /users
   def index
     @users = User.all
-    render json: @users, include: [:sleeps => {:except => :user_id}]
+    render json: @users.as_json(include: { sleeps: {except: :user_id, methods: :updated_at}})
+    .map { |user| add_sleep_in_progress(user)}
+  end
+
+  def add_sleep_in_progress(user)
+    user['sleeps'].each do |sleep|
+      sleep['updated_at'] = 'sleep in progress' if sleep['created_at'] == sleep['updated_at']
+    end
+    user
   end
 
   # GET /users/1
