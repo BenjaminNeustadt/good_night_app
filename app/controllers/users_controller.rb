@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   # GET /users
   def index
     @users = User.all
-    render json: @users.as_json(include: { sleeps: {except: :user_id, methods: [:clocked_out, :clocked_in], only: [:id, :clocked_in, :clocked_out]}, followers: {only: [:id, :name]}})
+    render json: @users.as_json(include: { sleeps: {except: :user_id, methods: [:clocked_in, :clocked_out], only: [:id, :clocked_in, :clocked_out]}, followers: {only: [:id, :name]}})
     .map { |user| add_sleep_in_progress(user)}
   end
 
