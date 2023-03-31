@@ -1,0 +1,66 @@
+= API design
+:author: Benjamin
+:copyright: (C) 2022 {author}
+:doctype: book
+:experimental:
+:header_footer: true
+:icons: font
+:sectnums:
+:sourcedir: assets
+:toc: left
+:source-highlighter: highlight.js
+:highlightjsdir: ./highlight
+
+== Brief
+
+We want to know how you structure the code and design the API.
+We would like you to implement a "good night" application to let users track when they go to bed and when they wake up.
+
+We require some restful APIS to achieve the following:
+
+1. "Clock In" operation, and return all "clocked-in" times, ordered by created time.
+2. Users can follow and unfollow other users.
+3. See the sleep records over the past week for their friends,
+ordered by the length of their sleep.
+
+Please implement the model, db migrations, and JSON API.
+You can assume that there are only two fields on the users "id" and "name".
+
+You do not need to implement any user registration API.
+
+You can use any gems you like.
+After you finish the project, please send me your GitHub project link.
+
+We want to see all of your development commits
+
+== Process Thoughts
+
+My initial thought is that in order to "let users track when they go to bed and when they wake up", there will also need to be a "clock_out" action, aswell as a "clock_in" action.
+
+This could be done in two ways, the first option is to create two separate POST routes (one for clocking in, the other for clocking out).
+
+The other option is to simply use a "toggle" on one simple route;
+when "clock_in" action is called, it first checks whether there are any ongoing sleeps.
+
+This makes sense though may create a later limitation if the program needs to be extended with some other functionality.
+The brief does not seem to be specific in this regard, so I will go down the "toggle" route.
+
+== Usage
+
+* Ruby version
+
+* System dependencies
+
+* Configuration
+
+* Database creation
+
+* Database initialization
+
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...
