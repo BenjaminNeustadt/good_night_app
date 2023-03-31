@@ -17,8 +17,14 @@ class UsersController < ApplicationController
 
   def clock_in
     @user = User.find(params[:user_id])
-    @sleep = @user.sleeps.create
-    render json: { status: 'success', data: @sleep }
+    if @user.sleeps.last&.updated_at == @user.sleeps.last.created_at
+      @user.sleeps.last.touch(:updated_at)
+    else
+      @user.sleeps.create
+    end
+    render json: @user, include: :sleeps
+      # OR instead:
+      # render json: { status: 'success', data: @sleep }
   end
 
   # GET /users/1
