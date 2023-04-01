@@ -36,27 +36,23 @@ class UsersController < ApplicationController
   end
 
   def follow
-    follower = User.find(params[:follower_id])
-    set_user
+    set_user and set_follower
     @follower.followees << @user
     render json: { status: 'success - user followed'}
   end
 
-  def set_follower
-    @follower = User.find(params[:follower_id])
-  end
-
   def unfollow
-    follower = User.find(params[:follower_id])
-    set_user
-    follower.followees.delete(@user)
+    set_user and set_follower
+    @follower.followees.delete(@user)
     render json: { status: 'success - user unfollowed'}
   end
 
   def clock_in
     set_user
-    if @user.sleeps.last&.updated_at == @user.sleeps.last.created_at
-      @user.sleeps.last.touch(:updated_at)
+    sleep_session = @user.sleeps.last
+
+    if sleep_session&.updated_at == sleep_session.created_at
+      sleep_session.touch(:updated_at)
     else
       @user.sleeps.create
     end
@@ -78,6 +74,10 @@ class UsersController < ApplicationController
     
   def set_user
     @user = User.find(params[:user_id])
+  end
+
+  def set_follower
+    @follower = User.find(params[:follower_id])
   end
 
 end
