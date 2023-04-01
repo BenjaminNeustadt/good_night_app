@@ -15,6 +15,40 @@ class UsersController < ApplicationController
     user
   end
 
+  variable = 5
+
+  def friends(user)
+    user.followers
+  end
+
+  # POST /users/:user_id/friends
+
+  def friends_sleeps
+    user = User.find(params[:user_id]) # user 1, name: Jon
+    # look at all of Jons followings/friends, 
+    # specifically look at their sleeps,
+    # now order them by duration of sleep time,
+    # and also we only care about the last 7 days
+
+    # DAYS = 7
+    # collection_of_relevant_records = []
+    # def limit_records_on_date
+    # take a sleep record, take the "clock_out" value and store it inside 
+    # collection_of_relevant_records if the date on that is between (DateTime.parse(that_date) - DAYS)..DateTime.now
+
+    # end
+
+    # for each sleep record of a friend, do this:
+    # the_beginning =  DateTime.parse(clocked_in).to_time.to_i
+    # the_end =  DateTime.parse(clocked_out).to_time.to_i
+    # duration = the_end - the_beginning
+
+    # minutes = duration/60
+    
+    # sort.reverse 
+
+  end
+
   def follow
     follower = User.find(params[:follower_id])
     @user = User.find(params[:user_id])

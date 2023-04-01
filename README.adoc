@@ -23,6 +23,8 @@ We require some restful APIS to achieve the following:
 3. See the sleep records over the past week for their friends,
 ordered by the length of their sleep.
 
+What do we mean by "past week"? 7 days, or from Monday, or 7 * 24 hours... etc
+
 Please implement the model, db migrations, and JSON API.
 You can assume that there are only two fields on the users "id" and "name".
 
