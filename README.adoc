@@ -2,14 +2,86 @@
 :author: Benjamin
 :copyright: (C) 2022 {author}
 :doctype: book
+:allow-uri-read: true
 :experimental:
 :header_footer: true
 :icons: font
 :sectnums:
-:sourcedir: assets
+:imagesdir: ./assets/
 :toc: left
 :source-highlighter: highlight.js
 :highlightjsdir: ./highlight
+
+// URLS
+:url-potsman: https://www.postman.com/downloads/
+
+This is an MVP for an API app that allows users to keep track of their sleeping habits. the current database used is a throwway sqlite3. Although there is dummy data in a seed file, it is recommended to interact with the API using the designated routes below.
+
+== Usage
+
+- Git clone this repository
+- Install dependencies with `bundle install`
+- Install the basic seed data `rails db:seed`
+- Start up a server `rail s`
+
+=== Routes
+
+- To test the routes, it is recommended to use a service like {url-potsman}[Postman].
+
+  # GET /users returns a list of users and attributes
+
+1. "Clock In" operation, and return all "clocked-in" times, ordered by created time.
+
+  # POST /users/:user_id/clock_in
+
+2. Users can follow and unfollow other users.
+
+  # POST users/:user_id/follow/:user_id
+  # POST users/:user_id/unfollow/:user_id
+
+3. See the sleep records over the past week for their friends,
+ordered by the length of their sleep.
+
+  # GET users/:user_id/friends_sleep_records
+
+== Process Thoughts
+
+My initial thought is that in order to "let users track when they go to bed and when they wake up", there will also need to be a "clock_out" action, aswell as a "clock_in" action.
+
+This could be done in two ways, the first option is to create two separate POST routes (one for clocking in, the other for clocking out).
+
+The other option is to simply use a "toggle" on one simple route;
+when "clock_in" action is called, it first checks whether there are any ongoing sleeps.
+
+This makes sense though may create a later limitation if the program needs to be extended with some other functionality.
+The brief does not seem to be specific in this regard, so I will go down the "toggle" route.
+
+== Requirements
+
+* Ruby version 
+  - ruby 3.0.0
+
+* System dependencie
+  - rails
+  - sqlite3
+  - puma
+
+== Limitations
+
+- The most significant limitation so far is that there are no tests.
+  Moving beyond this point it would be essential to first introduce tests.
+- Clarity can be brought to what is meant by "past week" as there are some very slight nuances.
+- It appears that the User controller has too many reasons to change, thereby giving the impression, that some methods currently on it are not its responibility (see below diagram).
+  - A solution would be to extract some methods to module(s) outside of this class.
+
+Here is a UML diagram that shows the current structure:
+
+image::uml.png[UML diagram]
+
+== Resources
+
+https://thoughtbot.com/blog/query-by-duration-in-active-record
+https://scribe.rip/how-to-create-a-follow-unfollow-button-in-your-rails-social-media-application-e4081c279bca
 
 == Brief
 
@@ -34,35 +106,3 @@ You can use any gems you like.
 After you finish the project, please send me your GitHub project link.
 
 We want to see all of your development commits
-
-== Process Thoughts
-
-My initial thought is that in order to "let users track when they go to bed and when they wake up", there will also need to be a "clock_out" action, aswell as a "clock_in" action.
-
-This could be done in two ways, the first option is to create two separate POST routes (one for clocking in, the other for clocking out).
-
-The other option is to simply use a "toggle" on one simple route;
-when "clock_in" action is called, it first checks whether there are any ongoing sleeps.
-
-This makes sense though may create a later limitation if the program needs to be extended with some other functionality.
-The brief does not seem to be specific in this regard, so I will go down the "toggle" route.
-
-== Usage
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...

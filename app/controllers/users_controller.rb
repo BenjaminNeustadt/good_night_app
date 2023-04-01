@@ -35,6 +35,7 @@ class UsersController < ApplicationController
     render json: { user_name: @user.name, sleep_records: sleep_records.sort_by { |record| record[:sleep_length] } }
   end
 
+  # POST users/:user_id/follow/:user_id
   def follow
     set_user and set_follower
     @follower.followees << @user
@@ -47,6 +48,7 @@ class UsersController < ApplicationController
     render json: { status: 'success - user unfollowed'}
   end
 
+  # POST /users/:user_id/clock_in
   def clock_in
     set_user
     sleep_session = @user.sleeps.last
