@@ -37,10 +37,13 @@ class UsersController < ApplicationController
 
   def follow
     follower = User.find(params[:follower_id])
-    set_user # this is the same as below
-    # @user    = User.find(params[:user_id])
-    follower.followees << @user
+    set_user
+    @follower.followees << @user
     render json: { status: 'success - user followed'}
+  end
+
+  def set_follower
+    @follower = User.find(params[:follower_id])
   end
 
   def unfollow
