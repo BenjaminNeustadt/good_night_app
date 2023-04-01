@@ -15,38 +15,28 @@ class UsersController < ApplicationController
     user
   end
 
-  variable = 5
+  # GET /users/:user_id/friends_sleep_records
 
-  def friends(user)
-    user.followers
-  end
+  def friends_sleep_records(days_limit = 7)
+    set_user
+    # @user = User.find(params[:user_id])
+    sleep_records = []
+    friends = @user.followers
 
-  # POST /users/:user_id/friends
+    friends.each do |friend|
+      sleeps = friend.sleeps.where(updated_at: ((DateTime.now - days_limit)..DateTime.now))
+      #puts "__________SLEEPS FOR_________ #{friend.name}: #{sleeps.inspect}"
 
-  def friends_sleeps
-    user = User.find(params[:user_id]) # user 1, name: Jon
-    # look at all of Jons followings/friends, 
-    # specifically look at their sleeps,
-    # now order them by duration of sleep time,
-    # and also we only care about the last 7 days
-
-    # DAYS = 7
-    # collection_of_relevant_records = []
-    # def limit_records_on_date
-    # take a sleep record, take the "clock_out" value and store it inside 
-    # collection_of_relevant_records if the date on that is between (DateTime.parse(that_date) - DAYS)..DateTime.now
-
-    # end
-
-    # for each sleep record of a friend, do this:
-    # the_beginning =  DateTime.parse(clocked_in).to_time.to_i
-    # the_end =  DateTime.parse(clocked_out).to_time.to_i
-    # duration = the_end - the_beginning
-
-    # minutes = duration/60
-    
-    # sort.reverse 
-
+      sleeps.each do |sleep|
+        # It will return the sleep duration in minutes; formatting should be done on the front-end
+        sleep_length = (sleep.created_at - sleep.updated_at).abs / 60 
+       # puts "__________SLEEP LENGTH FOR SLEEP__________ ##{sleep.id}: #{sleep_length} minutes"
+        sleep_records << { friend_name: friend.name, sleep_length: sleep_length }
+      end
+    end
+    #puts "__________SLEEP RECORDS_________: #{sleep_records.inspect}"
+    # If the sleep is not completed, it will render as having a duration of 0
+    render json: { user_name: @user.name, sleep_records: sleep_records.sort_by { |record| record[:sleep_length] } }
   end
 
   def follow
@@ -62,7 +52,8 @@ class UsersController < ApplicationController
   end
 
   def clock_in
-    @user = User.find(params[:user_id])
+    set_user # this is the same as below
+    # @user = User.find(params[:user_id])
     if @user.sleeps.last&.updated_at == @user.sleeps.last.created_at
       @user.sleeps.last.touch(:updated_at)
     else
