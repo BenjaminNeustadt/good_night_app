@@ -1,15 +1,14 @@
 class FollowsController < ApplicationController
+  before_action :set_user, :set_follower
 
   # POST users/:user_id/follow/:user_id
   def follow
-    set_user and set_follower
     @follower.followees << @user
     render json: { status: 'success - user followed'}
   end
 
   # POST users/:user_id/unfollow/:user_id
   def unfollow
-    set_user and set_follower
     @follower.followees.delete(@user)
     render json: { status: 'success - user unfollowed'}
   end
