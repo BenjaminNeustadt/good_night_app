@@ -27,19 +27,6 @@ class UsersController < ApplicationController
     render json: { user_name: @user.name, sleep_records: sleep_records.sort_by { |record| record[:sleep_length] } }
   end
 
-  # POST users/:user_id/follow/:user_id
-  def follow
-    set_user and set_follower
-    @follower.followees << @user
-    render json: { status: 'success - user followed'}
-  end
-
-  def unfollow
-    set_user and set_follower
-    @follower.followees.delete(@user)
-    render json: { status: 'success - user unfollowed'}
-  end
-
   # POST /users
   def create
     @user = User.new(user_params)
@@ -55,10 +42,6 @@ class UsersController < ApplicationController
     
   def set_user
     @user = User.find(params[:user_id])
-  end
-
-  def set_follower
-    @follower = User.find(params[:follower_id])
   end
 
 end
