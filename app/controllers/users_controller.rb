@@ -4,17 +4,9 @@ class UsersController < ApplicationController
   # GET /users
   def index
     @users = User.all
-    render json: @users.as_json(include: attribute_schema )
-    .map { |user| add_sleep_in_progress(user) }
+    render json: @users 
   end
 
-  # :TODO: This is a presentation helper method and should be extracted elsewhere
-  def add_sleep_in_progress(user)
-    user['sleeps'].each do |sleep|
-      sleep['clocked_out'] = 'sleep in progress' if sleep['clocked_in'] == sleep['clocked_out']
-    end
-    user
-  end
 
   # GET /users/:user_id/friends_sleep_records
   def friends_sleep_records(days_limit = 7)
@@ -67,19 +59,6 @@ class UsersController < ApplicationController
 
   def set_follower
     @follower = User.find(params[:follower_id])
-  end
-
-  def attribute_schema
-    {
-      sleeps: {
-        except:  :user_id,
-        methods: [:clocked_in, :clocked_out],
-        only:    [:id, :clocked_in, :clocked_out]
-      },
-      followers: {
-        only: [:id, :name]
-      }
-    }
   end
 
 end
