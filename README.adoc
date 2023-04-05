@@ -69,22 +69,24 @@ The "track" word is obviously different from "clock_in"; to resolve this we coul
   - ruby 3.0.0
 
 * System dependencies
-  - rails
-  - sqlite3
-  - puma
+  - Rails
+  - Sqlite3
+  - Puma
 
 == Limitations
 
-- The most significant limitation so far is that there are no tests.
+- The most significant limitation is that there are no supporting tests, these should be written.
   Moving beyond this point it would be essential to first introduce tests.
 - Clarity can be brought to what is meant by "past week" as there are some very slight nuances.
-- It appears that the User controller has too many reasons to change, thereby giving the impression, that some methods currently on it are not its responibility (see below diagram).
-  - A solution would be to extract some methods to module(s) outside of this class.
+- The User controller had too many reasons to change, thereby giving the impression that some methods were not its responibility (see below diagram). This was since ammended.
 
-Here is a UML diagram that shows the current structure:
+Here is a UML diagram that shows the previous structure:
 
 image::uml.png[UML diagram]
 
+After a refactor stage the structure is as follows:
+
+image::uml_2.png[UML diagram]
 == Resources
 
 https://thoughtbot.com/blog/query-by-duration-in-active-record
