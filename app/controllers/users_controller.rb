@@ -7,7 +7,6 @@ class UsersController < ApplicationController
     render json: @users 
   end
 
-
   # GET /users/:user_id/friends_sleep_records
   def friends_sleep_records(days_limit = 7)
     set_user
