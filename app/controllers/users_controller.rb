@@ -48,19 +48,6 @@ class UsersController < ApplicationController
     render json: { status: 'success - user unfollowed'}
   end
 
-  # POST /users/:user_id/clock_in
-  def clock_in
-    set_user
-    sleep_session = @user.sleeps.last
-
-    if sleep_session&.updated_at == sleep_session.created_at
-      sleep_session.touch(:updated_at)
-    else
-      @user.sleeps.create
-    end
-    render json: @user, include: :sleeps
-  end
-
   # POST /users
   def create
     @user = User.new(user_params)

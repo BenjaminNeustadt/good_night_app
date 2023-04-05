@@ -32,7 +32,7 @@ This is an MVP for an API app that allows users to keep track of their sleeping 
 
 1. "Clock In" operation, and return all "clocked-in" times, ordered by created time.
 
-  # POST /users/:user_id/clock_in
+  # POST /users/:user_id/sleeps/track
 
 2. Users can follow and unfollow other users.
 
@@ -51,17 +51,24 @@ My initial thought is that in order to "let users track when they go to bed and 
 This could be done in two ways, the first option is to create two separate POST routes (one for clocking in, the other for clocking out).
 
 The other option is to simply use a "toggle" on one simple route;
-when "clock_in" action is called, it first checks whether there are any ongoing sleeps.
+when "clock_in" action is called, it first checks whether there are any ongoing sleeps, if there are then it simply "closes"/"clocks_out" on the ongoing sleep in question.
 
-This makes sense though may create a later limitation if the program needs to be extended with some other functionality.
+This makes sense, though may create a later limitation if the program needs to be extended with some other functionality. The solution is to ensure that the "clock_in" and "clock_out" methods are distinct, even if they are called from within one method.
+
 The brief does not seem to be specific in this regard, so I will go down the "toggle" route.
+
+After a refactor, the route for "clocking in" is now:
+
+  # POST /users/:user_id/sleeps/track
+
+The "track" word is obviously different from "clock_in"; to resolve this we could create an alias method "clock_in" which would call "track", or otherwise rethink the design.
 
 == Requirements
 
 * Ruby version 
   - ruby 3.0.0
 
-* System dependencie
+* System dependencies
   - rails
   - sqlite3
   - puma
