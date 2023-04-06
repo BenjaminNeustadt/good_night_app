@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# Integration tests 
 RSpec.describe "UsersController", type: :request do
   describe "GET /users" do
 
@@ -14,5 +15,13 @@ RSpec.describe "UsersController", type: :request do
       get users_path
       expect(JSON.parse(response.body)).to eq expected
     end
+
+    it "increments a sleep on user" do
+      erin = User.create(name: "Erin")
+      erin.sleeps.create
+      get users_path
+      expect(JSON.parse(response.body).first["sleeps"].length).to eq 1
+    end
   end
 end
+:update
