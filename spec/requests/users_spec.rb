@@ -17,11 +17,21 @@ RSpec.describe "UsersController", type: :request do
     end
 
     it "increments a sleep on user" do
-      erin = User.create(name: "Erin")
-      erin.sleeps.create
+      user = User.create(name: "Erin")
+      user.sleeps.create
       get users_path
-      expect(JSON.parse(response.body).first["sleeps"].length).to eq 1
+      sleep_length = JSON.parse(response.body).first["sleeps"].length
+      expect(sleep_length).to eq 1
+    end
+
+    it "updated_at is initially 'Still sleeping'" do
+      user = User.create(name: "Erin")
+      user.sleeps.create
+      get users_path
+      sleep = JSON.parse(response.body).first["sleeps"].first
+      #sleep_start = sleep["created_at"]
+      sleep_end = sleep["updated_at"]
+      expect(sleep_end).to eq  "Still sleeping..."
     end
   end
 end
-:update
