@@ -1,14 +1,27 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show update destroy ]
 
+  DAYS_LIMIT = 7
+
   # GET /users
   def index
     @users = User.all
     render json: @users 
   end
 
+  # ==========================================================================================
+  # WIP ================
+  # ==========================================================================================
+
+  # this is a new method that replaces its predecessor,
+  # note that we will need to alter the routes in order for this to work
+  def report_friends_sleeps
+    @users.friends_sleep_records(sleep_records = [], DAYS_LIMIT)
+    render json: { user_name: @user.name, sleep_records: sleep_records.sort_by { |record| record[:sleep_length] } }
+  end
+
   # GET /users/:user_id/friends_sleep_records
-  def friends_sleep_records(days_limit = 7)
+  def friends_sleep_records
     # Change the name of this method to report_friends_sleeps
     #set_user
     sleep_records = []
@@ -21,7 +34,7 @@ class UsersController < ApplicationController
 
     friends.each do |friend|
       # Turn this into a method on the model.
-      sleeps = friend.sleeps.where(updated_at: ((DateTime.now - days_limit)..DateTime.now))
+      sleeps = friend.sleeps.where(updated_at: ((DateTime.now - DAYS_LIMIT)..DateTime.now))
 
       sleeps.each do |sleep|
         # It will return the sleep duration in minutes; formatting should be done on the front-end

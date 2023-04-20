@@ -22,31 +22,38 @@ class User < ApplicationRecord
   # ==========================================================================================
   # WIP ================
   # ==========================================================================================
-  # Below are some additions to DRY the controller
+  # Below are some additions to DRY the controller,
+  # they are methods that specifically interact with the database,
+  # some of the methods however are helper methods,
+  # following this article: https://dev.to/kputra/rails-skinny-controller-skinny-model-5f2k#phase-3
+  # We could begin to aspire to having skinny controller, skinny model by creacting classes inside the lib directory
+
+    ----------------------------------------------------------------------
+  # | by placing all of the business logic inside the model,             |
+  # | we will no longer need to make requests in order to test the code, |
+  # | we can simply test the methods                                     |
+     ---------------------------------------------------------------------
+
   def friends
     self.followers
   end
 
-  def friends_sleep_records
-    sleep_records = []
-
-    friends = @user.followers
-
+  def friends_sleep_records(sleep_records = [], days_limit)
     friends.each do |friend|
-      # Turn this into a method on the model.
-      sleeps_of(friend).each do |sleep|
+      sleeps_of(friend, days_limit).each do |sleep|
         minutes_of_(sleep)
+        sleep_records << { friend_name: friend.name, sleep_length: length_of_(sleep) }
       end
     end
+    sleep_records
   end
 
-  def sleeps_of(friend)
+  def sleeps_of(friend, days_limit)
     friend.sleeps.where(updated_at: ((DateTime.now - days_limit)..DateTime.now))
   end
 
-  def minutes_of_(sleep)
-    sleep_length = (sleep.created_at - sleep.updated_at).abs / 60 
-    sleep_records << { friend_name: friend.name, sleep_length: sleep_length }
+  def length_of_(sleep)
+    (sleep.created_at - sleep.updated_at).abs / 60 
   end 
 
 end
