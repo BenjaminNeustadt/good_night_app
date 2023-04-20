@@ -25,14 +25,12 @@ class User < ApplicationRecord
   end
 
   def friends_sleeps
-    sleep_records = []
-    friends.each do |friend|
+    friends.each_with_object([]) do |friend, records|
       sleeps_of(friend).each do |sleep|
         length_of(sleep)
-        sleep_records << { friend_name: friend.name, sleep_length: length_of(sleep) }
+        records << { friend_name: friend.name, sleep_length: length_of(sleep) }
       end
     end
-    sleep_records
   end
 
   def sleeps_of(friend)
