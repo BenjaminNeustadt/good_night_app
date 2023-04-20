@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   post '/users/:user_id/unfollow/:follower_id', to: "follows#unfollow"
 
   resources :users do
-    get :report_friends_sleeps
+    get :friends_sleep_records
     resources :sleeps do 
       collection do 
         post "track", action: :track, as: :track
