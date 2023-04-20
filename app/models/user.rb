@@ -23,7 +23,8 @@ class User < ApplicationRecord
   # WIP ================
   # ==========================================================================================
   # Below are some additions to DRY the controller,
-  # they are methods that specifically interact with the database,
+  # 2 are methods that specifically interact with the database,
+  # on is a method that calls the latter
   # some of the methods however are helper methods,
   # following this article: https://dev.to/kputra/rails-skinny-controller-skinny-model-5f2k#phase-3
   # We could begin to aspire to having skinny controller, skinny model by creacting classes inside the lib directory
@@ -38,7 +39,8 @@ class User < ApplicationRecord
     self.followers
   end
 
-  def friends_sleep_records(sleep_records = [], days_limit)
+  def friends_sleep_records(days_limit)
+    sleep_records = []
     friends.each do |friend|
       sleeps_of(friend, days_limit).each do |sleep|
         minutes_of_(sleep)

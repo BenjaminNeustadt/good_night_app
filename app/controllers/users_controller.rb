@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show update destroy ]
 
+  # the sleeps of friends we are interested is limited to the last week
   DAYS_LIMIT = 7
 
   # GET /users
