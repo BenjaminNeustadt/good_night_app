@@ -9,11 +9,18 @@ class UsersController < ApplicationController
 
   # GET /users/:user_id/friends_sleep_records
   def friends_sleep_records(days_limit = 7)
-    set_user
+    # Change the name of this method to report_friends_sleeps
+    #set_user
     sleep_records = []
+    # could we create a friends method on the model that is
+    # def friends
+    #    self.followers
+    # end``
+  
     friends = @user.followers
 
     friends.each do |friend|
+      # Turn this into a method on the model.
       sleeps = friend.sleeps.where(updated_at: ((DateTime.now - days_limit)..DateTime.now))
 
       sleeps.each do |sleep|

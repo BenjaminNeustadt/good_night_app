@@ -19,4 +19,34 @@ class User < ApplicationRecord
     self.sleeps.last&.touch
   end
 
+  # ==========================================================================================
+  # WIP ================
+  # ==========================================================================================
+  # Below are some additions to DRY the controller
+  def friends
+    self.followers
+  end
+
+  def friends_sleep_records
+    sleep_records = []
+
+    friends = @user.followers
+
+    friends.each do |friend|
+      # Turn this into a method on the model.
+      sleeps_of(friend).each do |sleep|
+        minutes_of_(sleep)
+      end
+    end
+  end
+
+  def sleeps_of(friend)
+    friend.sleeps.where(updated_at: ((DateTime.now - days_limit)..DateTime.now))
+  end
+
+  def minutes_of_(sleep)
+    sleep_length = (sleep.created_at - sleep.updated_at).abs / 60 
+    sleep_records << { friend_name: friend.name, sleep_length: sleep_length }
+  end 
+
 end
