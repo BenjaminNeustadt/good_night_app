@@ -1,11 +1,11 @@
 class User < ApplicationRecord
   has_many :sleeps
-
   has_many :followed_users, foreign_key: :follower_id, class_name: 'Follow'
   has_many :followees, through: :followed_users
   has_many :following_users, foreign_key: :followee_id, class_name: 'Follow'
   has_many :followers, through: :following_users
 
+  # the sleeps of friends we are interested is limited to the last week
   DAYS_LIMIT = 70
 
   def is_still_sleeping?
@@ -20,24 +20,6 @@ class User < ApplicationRecord
     self.sleeps.last&.touch
   end
 
-=begin
-==========================================================================================
-WIP ================
-==========================================================================================
-Below are some additions to DRY the controller,
-2 are methods that specifically interact with the database,
-on is a method that calls the latter
-some of the methods however are helper methods,
-following this article: https://dev.to/kputra/rails-skinny-controller-skinny-model-5f2k#phase-3
-We could begin to aspire to having skinny controller, skinny model by creacting classes inside the lib directory
-
-----------------------------------------------------------------------
-| by placing all of the business logic inside the model,             |
-| we will no longer need to make requests in order to test the code, |
-| we can simply test the methods                                     |
-  ---------------------------------------------------------------------
-
-=end
   def friends
     self.followers
   end
