@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   def friends_sleep_records
     set_user
     render json: {
-      user_name: @user.name, sleep_records: @user.friends_sleeps.sort_by { |record| record[:sleep_length] }
+      user_name: @user.name, sleep_records: @user.friends_sleeps
     }
   end
 

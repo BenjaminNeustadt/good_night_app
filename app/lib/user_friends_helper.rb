@@ -8,7 +8,7 @@ module UserFriendsHelper
         length_of(sleep)
         records << { friend_name: friend.name, sleep_length: length_of(sleep) }
       end
-    end
+    end.sort_by { |record| record[:sleep_length] }
   end
 
   def sleeps_of(friend)
