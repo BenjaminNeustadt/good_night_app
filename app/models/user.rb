@@ -6,9 +6,6 @@ class User < ApplicationRecord
   has_many :following_users, foreign_key: :followee_id, class_name: 'Follow'
   has_many :followers, through: :following_users
 
-  # the sleeps of friends we are interested is limited to the last week
-  DAYS_LIMIT = 70
-
   def is_still_sleeping?
     self.sleeps&.last.updated_at == self.sleeps&.last.created_at
   end

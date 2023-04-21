@@ -4,6 +4,10 @@ RSpec.describe "UsersModel" do
 
   context ".friends_sleep_records" do
 
+    before(:each) do
+      @current_time = Time.now.floor
+    end
+
     it 'contains the sleep records of friends' do
       
       # Create users
@@ -12,8 +16,8 @@ RSpec.describe "UsersModel" do
       user3 = User.create(name: 'User 3')
 
       # Create sleeps for users
-      sleep_record1 = Sleep.create(created_at: "2023-03-31T16:33:00.000Z", updated_at: "2023-03-31T18:33:00.000Z", user: user1)
-      sleep_record2 = Sleep.create(created_at: "2023-03-31T16:33:00.000Z", updated_at: "2023-03-31T19:33:00.000Z", user: user1)
+      sleep_record1 = Sleep.create(created_at: @current_time - 2.hours, updated_at: @current_time, user: user1)
+      sleep_record2 = Sleep.create(created_at: @current_time - 3.hours, updated_at: @current_time, user: user1)
 
       # Create friend relationships
       Follow.create(follower: user1, followee: user2)
@@ -32,14 +36,14 @@ RSpec.describe "UsersModel" do
       user3 = User.create(name: 'User 3')
 
       # Create sleeps for users
-      sleep_record1 = Sleep.create(created_at: "2023-03-31T16:33:00.000Z", updated_at: "2023-03-31T18:33:00.000Z", user: user1)
-      sleep_record2 = Sleep.create(created_at: "2023-03-31T16:33:00.000Z", updated_at: "2023-03-31T19:33:00.000Z", user: user1)
+      sleep_record1 = Sleep.create(created_at: @current_time - 2.hours, updated_at: @current_time, user: user1)
+      sleep_record2 = Sleep.create(created_at: @current_time - 3.hours, updated_at: @current_time, user: user1)
 
       # Create friend relationships
       Follow.create(follower: user1, followee: user2)
       Follow.create(follower: user1, followee: user3)
 
-      expected_sleep_record = [{:friend_name=>"User 1", :sleep_length=>120.0}, {:friend_name=>"User 1", :sleep_length=>180}]
+      expected_sleep_record = [{:friend_name=>"User 1", :sleep_length=>120}, {:friend_name=>"User 1", :sleep_length=>180}]
 
       expect(user2.friends_sleeps.first).to eq(expected_sleep_record[0])
       expect(user2.friends_sleeps.last).to eq(expected_sleep_record[1])

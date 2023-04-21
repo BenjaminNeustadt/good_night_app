@@ -1,6 +1,7 @@
 module UserFriendsHelper
 
-  DAYS_LIMIT = 70
+  # the sleeps of friends we are interested is limited to the last week
+  DAYS_LIMIT = 7
 
   def friends_sleeps_past_week
     friends.each_with_object([]) do |friend, records|
