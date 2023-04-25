@@ -21,14 +21,29 @@ This is an MVP for an API app that allows users to keep track of their sleeping 
 
 - Git clone this repository
 - Install dependencies with `bundle install`
-- Install the basic seed data `rails db:seed`
-- Start up a server `rail s`
+
+Run:
+
+- `rails db:migrate` (to create the database tables)
+- `rails db:seed` (to install basic seed data)
+
+To run the tests:
+
+- `bundle exec rspec -fd`
+
+To start up a server:
+
+- `rail s`
 
 === Routes
 
 - To test the routes, it is recommended to use a service like {url-potsman}[Postman].
 
   # GET /users returns a list of users and attributes
+
+__It should look something like this:__
+
+image::users_get_route.png[example of users GET route]
 
 1. "Clock In" operation, and return all "clocked-in" times, ordered by created time.
 
@@ -43,6 +58,10 @@ This is an MVP for an API app that allows users to keep track of their sleeping 
 ordered by the length of their sleep.
 
   # GET users/:user_id/friends_sleep_records
+
+__It should look like this (the sleep duration is reported in minutes):__
+
+image::friends_sleep_records.png[example of friends sleep records GET route]
 
 == Process Thoughts
 
@@ -72,13 +91,12 @@ The "track" word is obviously different from "clock_in"; to resolve this we coul
   - Rails
   - Sqlite3
   - Puma
+  - active_model_serializers
 
 == Limitations
 
-- The most significant limitation is that there are no supporting tests, these should be written.
-  Moving beyond this point it would be essential to first introduce tests.
-- Clarity can be brought to what is meant by "past week" as there are some very slight nuances.
-- The User controller had too many reasons to change, thereby giving the impression that some methods were not its responibility (see below diagram). This was since ammended.
+- Some further tests could be written (i.e. for 'Follows')
+- Clarity can be brought to what is meant by "past week" as there are some slight nuances.
 
 Here is a UML diagram that shows the previous structure:
 
